@@ -55,6 +55,7 @@ public class SendManager {
 		synchronized (lock1) {
 			items.add(telemetry);
 		}
+		lock1.notifyAll();
 	}
 
 	public void addTelemetryWithDetails(List<TelemetryWithDetails> listTelemetryWithDetails) {
@@ -63,10 +64,12 @@ public class SendManager {
 				items.add(telemetryWithDetails.getTelemetry());
 			}
 		}
+		lock1.notifyAll();
 	}
 
 	@PostConstruct
 	public void startSender() {
+		logger.debug("start threads");
 		processing = true;
 		threads = new ArrayList<>(CITY_GUIDE_SENDERS);
 		for (int i = 0; i < CITY_GUIDE_SENDERS; i++) {
@@ -86,38 +89,47 @@ public class SendManager {
 			} catch (InterruptedException e) {
 			}
 		}
+		logger.debug("threads stoped");
 	}
 
 	class SenderRunnable implements Runnable {
 
 		@Override
 		public void run() {
+			try {
 
-			while (processing) {
-				List<TelemetryBa> list = new ArrayList<>();
-				synchronized (lock1) {
-					for (int i = 0; i < CITY_GUIDE_SIZE; i++) {
-						TelemetryBa item = items.poll();
-						if (item == null) {
-							break;
+				while (processing) {
+					List<TelemetryBa> list = new ArrayList<>();
+					synchronized (lock1) {
+						logger.debug("SenderRunnable in lock1");
+
+						for (int i = 0; i < CITY_GUIDE_SIZE; i++) {
+							TelemetryBa item = items.poll();
+							if (item == null) {
+								break;
+							}
+							list.add(item);
 						}
-						list.add(item);
+					}
+					lock1.notifyAll();
+					if (list.size() > 0) {
+						try {
+							Document doc = createCityGuideMessage(list);
+							sendCityGuideMessage(doc);
+						} catch (ParserConfigurationException | TransformerFactoryConfigurationError
+								| TransformerException
+								| IOException e) {
+							logger.error("SendManager", e);
+						}
+					} else {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+						}
 					}
 				}
-				if (list.size() > 0) {
-					try {
-						Document doc = createCityGuideMessage(list);
-						sendCityGuideMessage(doc);
-					} catch (ParserConfigurationException | TransformerFactoryConfigurationError | TransformerException
-							| IOException e) {
-						logger.error("SendManager", e);
-					}
-				} else {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-					}
-				}
+			} catch (Exception e) {
+				logger.error("ROOT SendManager", e);
 			}
 		}
 
