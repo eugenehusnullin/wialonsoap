@@ -42,7 +42,7 @@ public class SendManager {
 	private Queue<TelemetryBa> items = new ArrayDeque<>();
 	private Object lock1 = new Object();
 
-	private int CITY_GUIDE_SENDERS = 10;
+	private int CITY_GUIDE_SENDERS = 1000;
 	private int CITY_GUIDE_SIZE = 30;
 	private String CITY_GUIDE_URL = "http://service.probki.net/xmltrack/api/nytrack";
 
