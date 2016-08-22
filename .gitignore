@@ -1,0 +1,17 @@
+.classpath
+.project
+.settings/*
+.gradle/*
+/build
+/bin
+WebContent/lib/*
+src/main/resources/log4j2.xml
+angular/*
+WebContent/resources/angular/*
+WebContent/resources/bootstrap/*
+WebContent/resources/css/*
+WebContent/resources/jquery/*
+WebContent/resources/dist
+/gradle
+gradlew
+gradlew.bat

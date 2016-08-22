@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://webservice.telemetry.udo.fors.ru/" xmlns:tns="http://webservice.telemetry.udo.fors.ru/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="storeTelemetry" type="tns:storeTelemetry"/>
+<xs:element name="storeTelemetryList" type="tns:storeTelemetryList"/>
+<xs:element name="storeTelemetryListResponse" type="tns:storeTelemetryListResponse"/>
+<xs:element name="storeTelemetryResponse" type="tns:storeTelemetryResponse"/>
+<xs:element name="testService" type="tns:testService"/>
+<xs:element name="testServiceResponse" type="tns:testServiceResponse"/>
+<xs:complexType name="testService">
+<xs:sequence>
+<xs:element minOccurs="0" name="a" type="xs:int"/>
+<xs:element minOccurs="0" name="b" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="testServiceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="result" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="storeTelemetryList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="telemetryWithDetails" type="tns:telemetryWithDetails"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="telemetryWithDetails">
+<xs:sequence>
+<xs:element name="telemetry" type="tns:telemetryBa"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="telemetryDetails" type="tns:telemetryDetailBa"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="telemetryBa">
+<xs:sequence>
+<xs:element name="coordX" type="xs:double"/>
+<xs:element name="coordY" type="xs:double"/>
+<xs:element name="date" type="xs:dateTime"/>
+<xs:element name="glonass" type="xs:boolean"/>
+<xs:element name="gpsCode" type="xs:string"/>
+<xs:element name="speed" type="xs:double"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="telemetryDetailBa">
+<xs:sequence>
+<xs:element minOccurs="0" name="sensorCode" type="xs:string"/>
+<xs:element minOccurs="0" name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="storeTelemetryListResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="storeTelemetry">
+<xs:sequence>
+<xs:element minOccurs="0" name="telemetry" type="tns:telemetryBa"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="telemetryDetails" type="tns:telemetryDetailBa"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="storeTelemetryResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:element name="TelemetryException" type="tns:TelemetryException"/>
+<xs:complexType name="TelemetryException">
+<xs:sequence>
+<xs:element name="user" nillable="true" type="xs:string"/>
+<xs:element name="gpsCode" nillable="true" type="xs:string"/>
+<xs:element name="date" nillable="true" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

@@ -1,0 +1,45 @@
+plugins {
+  id 'com.ewerk.gradle.plugins.jaxb2' version '1.0.2'
+}
+
+apply plugin: 'war'
+sourceCompatibility = 1.8
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+}
+
+//jaxb2 {
+//  xjc {
+//    'telemetry-classes' {
+      //generatedSourcesDir = 'src/main/java'
+//      basePackage = 'ru.fors.udo.telemetry.webservice'
+//      schema = 'src/main/resources/telemetryWebService.xsd'
+//    }
+//  }
+//}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'WialonSOAP4',
+                   'Implementation-Version': version
+    }
+}
+
+project.ext {
+	log4jVersion = '2.2'
+}
+
+webAppDirName = 'WebContent'
+
+dependencies {
+	compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: project.log4jVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: project.log4jVersion
+    compile group: 'org.springframework.ws',   name: 'spring-ws-core', version: '2.3.0.RELEASE'
+    compile group: 'com.sun.xml.bind',   name: 'jaxb-xjc', version: '2.2.4-1'
+    compile group: 'org.springframework.boot',   name: 'spring-boot-starter-ws', version: '1.4.0.RELEASE'
+    compile group: 'org.springframework.ws', name: 'spring-ws-security', version: '2.3.0.RELEASE'
+    
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}

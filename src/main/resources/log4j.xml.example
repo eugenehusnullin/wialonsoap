@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<RollingFile name="Appender1" append="false" fileName="logs/wialonSOAP/all.log"
+			filePattern="logs/wialonSOAP/all-%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+		<RollingFile name="AppenderErrors" append="false" fileName="logs/wialonSOAP/errors.log"
+			filePattern="logs/wialonSOAP/errors-%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Root level="debug">
+			<AppenderRef ref="Appender1" />
+			<AppenderRef ref="AppenderErrors" level="error" />
+		</Root>
+	</Loggers>
+</Configuration>

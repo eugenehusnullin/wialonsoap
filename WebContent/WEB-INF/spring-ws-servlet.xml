@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:ws="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd 
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services.xsd">
+		
+	<bean id="messageFactory" class="ru.fors.udo.telemetry.webservice.SaajSoapMessageFactoryMyImpl">
+        <property name="soapVersion">
+            <util:constant static-field="org.springframework.ws.soap.SoapVersion.SOAP_11"/>
+        </property>
+    </bean>
+
+	<ws:annotation-driven/>
+	
+	<ws:interceptors>
+		<bean class="org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor">
+			<property name="validationActions" value="UsernameToken"></property>
+			<property name="validationCallbackHandler" ref="simplePasswordValidation"></property>
+		</bean>
+	</ws:interceptors>
+	
+
+	<bean id="simplePasswordValidation"
+		class="org.springframework.ws.soap.security.wss4j2.callback.SimplePasswordValidationCallbackHandler">
+		<property name="users">
+			<props>
+				<prop key="V_ROT">MNE_NOGI</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<context:component-scan base-package="ru" />
+	<context:annotation-config />	
+
+</beans>
