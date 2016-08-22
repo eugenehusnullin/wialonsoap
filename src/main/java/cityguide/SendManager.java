@@ -74,7 +74,7 @@ public class SendManager {
 		processing = true;
 		threads = new ArrayList<>(CITY_GUIDE_SENDERS);
 		for (int i = 0; i < CITY_GUIDE_SENDERS; i++) {
-			Runnable senderRunnable = new SenderRunnable();
+			Runnable senderRunnable = new SenderRunnableSimple();
 			Thread thread = new Thread(senderRunnable);
 			thread.start();
 			threads.add(thread);
@@ -138,6 +138,62 @@ public class SendManager {
 
 	}
 
+	class SenderRunnableSimple implements Runnable {
+
+		@Override
+		public void run() {
+			try {
+
+				while (processing) {
+					TelemetryBa item = null;
+					synchronized (lock1) {
+						item = items.poll();
+						lock1.notifyAll();
+					}
+
+					if (item != null) {
+						try {
+							Document doc = createCityGuideMessage(item);
+							sendCityGuideMessage(doc);
+						} catch (ParserConfigurationException | TransformerFactoryConfigurationError
+								| TransformerException
+								| IOException e) {
+							logger.error("SendManager", e);
+						}
+					} else {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+						}
+					}
+				}
+			} catch (Exception e) {
+				logger.error("ROOT SendManager", e);
+			}
+		}
+
+	}
+
+	private Document createCityGuideMessage(TelemetryBa telemetry) throws ParserConfigurationException {
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+		Document doc = docBuilder.newDocument();
+
+		Element pointsElement = doc.createElement("points");
+		pointsElement.setAttribute("id", telemetry.getGpsCode());
+		doc.appendChild(pointsElement);
+
+		Element pointElement = doc.createElement("point");
+		pointElement.setAttribute("speed", Integer.toString(Double.valueOf(telemetry.getSpeed()).intValue()));
+		pointElement.setAttribute("lat", Double.toString(telemetry.getCoordX()));
+		pointElement.setAttribute("lon", Double.toString(telemetry.getCoordY()));
+		pointElement.setAttribute("isotime",
+				parseToIsoTime(telemetry.getDate().toGregorianCalendar().getTime()));
+		pointsElement.appendChild(pointElement);
+
+		return doc;
+	}
+
 	private Document createCityGuideMessage(List<TelemetryBa> list) throws ParserConfigurationException {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -152,7 +208,6 @@ public class SendManager {
 			pointElement.setAttribute("speed", Integer.toString(Double.valueOf(telemetry.getSpeed()).intValue()));
 			pointElement.setAttribute("lat", Double.toString(telemetry.getCoordX()));
 			pointElement.setAttribute("lon", Double.toString(telemetry.getCoordY()));
-
 			pointElement.setAttribute("isotime",
 					parseToIsoTime(telemetry.getDate().toGregorianCalendar().getTime()));
 			pointsElement.appendChild(pointElement);
