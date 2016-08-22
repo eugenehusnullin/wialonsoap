@@ -54,8 +54,9 @@ public class SendManager {
 	public void addTelemetry(TelemetryBa telemetry) {
 		synchronized (lock1) {
 			items.add(telemetry);
+			lock1.notifyAll();
 		}
-		lock1.notifyAll();
+
 	}
 
 	public void addTelemetryWithDetails(List<TelemetryWithDetails> listTelemetryWithDetails) {
@@ -63,8 +64,8 @@ public class SendManager {
 			for (TelemetryWithDetails telemetryWithDetails : listTelemetryWithDetails) {
 				items.add(telemetryWithDetails.getTelemetry());
 			}
+			lock1.notifyAll();
 		}
-		lock1.notifyAll();
 	}
 
 	@PostConstruct
@@ -106,12 +107,14 @@ public class SendManager {
 						for (int i = 0; i < CITY_GUIDE_SIZE; i++) {
 							TelemetryBa item = items.poll();
 							if (item == null) {
+								lock1.notifyAll();
 								break;
 							}
 							list.add(item);
 						}
+						lock1.notifyAll();
 					}
-					lock1.notifyAll();
+
 					if (list.size() > 0) {
 						try {
 							Document doc = createCityGuideMessage(list);
