@@ -19,7 +19,7 @@ public class MessageDecoder extends ChannelHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		ByteBuf buf = (ByteBuf) msg;
-		byte[] messageBytes = new byte[buf.capacity()];
+		byte[] messageBytes = new byte[buf.writerIndex()];
 		buf.readBytes(messageBytes);
 		String str = new String(messageBytes, asciiCharset);
 		logger.debug(str);
