@@ -1,4 +1,4 @@
-package ru.fors.udo.telemetry.webservice;
+package wialonsoap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -7,6 +7,12 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import cityguide.SendManager;
+import ru.fors.udo.telemetry.webservice.StoreTelemetry;
+import ru.fors.udo.telemetry.webservice.StoreTelemetryList;
+import ru.fors.udo.telemetry.webservice.StoreTelemetryListResponse;
+import ru.fors.udo.telemetry.webservice.StoreTelemetryResponse;
+import ru.fors.udo.telemetry.webservice.TestService;
+import ru.fors.udo.telemetry.webservice.TestServiceResponse;
 
 @Endpoint
 public class TelemetryService {

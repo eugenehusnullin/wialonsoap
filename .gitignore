@@ -15,3 +15,6 @@ WebContent/resources/dist
 /gradle
 gradlew
 gradlew.bat
+/.gradle/
+
+WebContent/WEB-INF/settings

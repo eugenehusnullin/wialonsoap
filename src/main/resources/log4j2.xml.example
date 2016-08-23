@@ -15,9 +15,29 @@
 				<TimeBasedTriggeringPolicy />
 			</Policies>
 		</RollingFile>
+		<RollingFile name="SendManager" append="false" fileName="logs/wialonSOAP/sender.log"
+			filePattern="logs/wialonSOAP/sender-%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+		<RollingFile name="ipsAppender" append="false" fileName="logs/wialonSOAP/ips.log"
+			filePattern="logs/wialonSOAP/ips-%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
 	</Appenders>
 	<Loggers>
-		<Root level="debug">
+		<Logger name="ips" level="debug">
+	      		<AppenderRef ref="ipsAppender" />
+	    </Logger>
+		<Logger name="cityguide.SendManager" level="debug">
+	      		<AppenderRef ref="SendManager" />
+	    </Logger>
+		<Root level="info">
 			<AppenderRef ref="Appender1" />
 			<AppenderRef ref="AppenderErrors" level="error" />
 		</Root>

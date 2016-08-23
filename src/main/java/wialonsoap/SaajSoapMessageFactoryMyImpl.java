@@ -1,4 +1,4 @@
-package ru.fors.udo.telemetry.webservice;
+package wialonsoap;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
