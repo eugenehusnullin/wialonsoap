@@ -1,7 +1,5 @@
 package wialonips;
 
-import java.nio.charset.Charset;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
@@ -11,8 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -21,7 +17,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.util.concurrent.Future;
 
 @Service
@@ -37,11 +32,11 @@ public class SocketStarter {
 	private EventLoopGroup workerGroup;
 	private ServerBootstrap serverBootstrap;
 	private Channel socketChannel;
-	private Charset asciiCharset = Charset.forName("ASCII");
+	// private Charset asciiCharset = Charset.forName("ASCII");
 
 	@PostConstruct
 	public void run() throws InterruptedException {
-		ByteBuf delimiter = Unpooled.copiedBuffer("\r\n", asciiCharset);
+		// ByteBuf delimiter = Unpooled.copiedBuffer("\r\n", asciiCharset);
 
 		bossGroup = new NioEventLoopGroup();
 		workerGroup = new NioEventLoopGroup();
@@ -52,8 +47,8 @@ public class SocketStarter {
 				.childHandler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					protected void initChannel(SocketChannel ch) throws Exception {
-						ch.pipeline().addLast(new DelimiterBasedFrameDecoder(500, delimiter), new MessageDecoder());
-						//ch.pipeline().addLast(new MessageDecoder());
+						// ch.pipeline().addLast(new DelimiterBasedFrameDecoder(500, delimiter), new MessageDecoder());
+						ch.pipeline().addLast(new MessageDecoder());
 					}
 				})
 				.option(ChannelOption.SO_BACKLOG, 128)
