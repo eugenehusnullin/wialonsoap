@@ -52,8 +52,8 @@ public class SocketStarter {
 				.childHandler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					protected void initChannel(SocketChannel ch) throws Exception {
-						//ch.pipeline().addLast(new DelimiterBasedFrameDecoder(500, delimiter), new MessageDecoder());
-						ch.pipeline().addLast(new MessageDecoder());
+						ch.pipeline().addLast(new DelimiterBasedFrameDecoder(500, delimiter), new MessageDecoder());
+						//ch.pipeline().addLast(new MessageDecoder());
 					}
 				})
 				.option(ChannelOption.SO_BACKLOG, 128)
