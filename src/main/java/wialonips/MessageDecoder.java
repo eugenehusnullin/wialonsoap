@@ -1,6 +1,7 @@
 package wialonips;
 
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ public class MessageDecoder extends ChannelHandlerAdapter {
 
 	public final static AttributeKey<String> AK_ID = AttributeKey.valueOf("id");
 	public final static AttributeKey<String> AK_REMAINS = AttributeKey.valueOf("remains");
+	public final static AttributeKey<LocalDateTime> AK_LASTSEND = AttributeKey.valueOf("lastsend");
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -39,6 +41,14 @@ public class MessageDecoder extends ChannelHandlerAdapter {
 		buf.readBytes(messageBytes);
 		String str = new String(messageBytes, asciiCharset);
 		logger.debug(str);
+
+		LocalDateTime lastSend = ctx.channel().attr(AK_LASTSEND).get();
+		if (lastSend != null && lastSend.isAfter(LocalDateTime.now().minusMinutes(1))) {
+			logger.debug("decided send");
+			return;
+		} else {
+			logger.debug("decided NOT to send");
+		}
 
 		String remains = ctx.channel().attr(AK_REMAINS).get();
 		if (remains != null) {
@@ -65,6 +75,7 @@ public class MessageDecoder extends ChannelHandlerAdapter {
 		}
 
 		messageEncoder.encode(imei, lines);
+		ctx.channel().attr(AK_LASTSEND).set(LocalDateTime.now());
 	}
 
 	private boolean validImei(String imei) {
