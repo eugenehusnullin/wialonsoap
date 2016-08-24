@@ -50,7 +50,7 @@ public class SocketStarter {
 				})
 				.option(ChannelOption.SO_BACKLOG, 128)
 				.option(ChannelOption.SO_LINGER, 0)
-				.childOption(ChannelOption.SO_KEEPALIVE, true)
+				//.childOption(ChannelOption.SO_KEEPALIVE, true)
 				.childOption(ChannelOption.SO_LINGER, 0);
 
 		ChannelFuture channelFuture = serverBootstrap.bind(host, port).sync();
