@@ -158,6 +158,7 @@ public class MessageEncoder {
 			logger.warn("CityGuideHandler error send point. Error code=" + connection.getResponseCode() + ", reason: "
 					+ reason);
 		}
+		connection.disconnect();
 	}
 
 	private String nodeToString(Node node) throws TransformerFactoryConfigurationError, TransformerException {
