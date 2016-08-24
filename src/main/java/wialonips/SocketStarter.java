@@ -32,11 +32,9 @@ public class SocketStarter {
 	private EventLoopGroup workerGroup;
 	private ServerBootstrap serverBootstrap;
 	private Channel socketChannel;
-	// private Charset asciiCharset = Charset.forName("ASCII");
 
 	@PostConstruct
 	public void run() throws InterruptedException {
-		// ByteBuf delimiter = Unpooled.copiedBuffer("\r\n", asciiCharset);
 
 		bossGroup = new NioEventLoopGroup();
 		workerGroup = new NioEventLoopGroup();
@@ -47,7 +45,6 @@ public class SocketStarter {
 				.childHandler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					protected void initChannel(SocketChannel ch) throws Exception {
-						// ch.pipeline().addLast(new DelimiterBasedFrameDecoder(500, delimiter), new MessageDecoder());
 						ch.pipeline().addLast(new MessageDecoder());
 					}
 				})
