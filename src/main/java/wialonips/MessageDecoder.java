@@ -39,6 +39,7 @@ public class MessageDecoder extends ChannelHandlerAdapter {
 		ByteBuf buf = (ByteBuf) msg;
 		byte[] messageBytes = new byte[buf.writerIndex()];
 		buf.readBytes(messageBytes);
+		buf.release();
 		String str = new String(messageBytes, asciiCharset);
 		logger.debug(str);
 
