@@ -44,10 +44,10 @@ public class MessageDecoder extends ChannelHandlerAdapter {
 
 		LocalDateTime lastSend = ctx.channel().attr(AK_LASTSEND).get();
 		if (lastSend != null && lastSend.isAfter(LocalDateTime.now().minusMinutes(1))) {
-			logger.debug("decided send");
+			logger.debug("decided NOT to send");
 			return;
 		} else {
-			logger.debug("decided NOT to send");
+			logger.debug("decided to send");
 		}
 
 		String remains = ctx.channel().attr(AK_REMAINS).get();
