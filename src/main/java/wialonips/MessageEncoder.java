@@ -47,7 +47,7 @@ import org.w3c.dom.Node;
  */
 
 public class MessageEncoder {
-	private static final Logger logger = LoggerFactory.getLogger(MessageDecoder.class);
+	private static final Logger logger = LoggerFactory.getLogger(MessageEncoder.class);
 	private static String CITY_GUIDE_URL = "http://service.probki.net/xmltrack/api/nytrack";
 
 	public void encode(String imei, String[] lines) {
