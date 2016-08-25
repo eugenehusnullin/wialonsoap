@@ -30,7 +30,7 @@ jar {
 project.ext {
 	log4jVersion = '2.2'
 	commonsioVersion = '1.3.2'
-	nettyVersion = '5.0.0.Alpha2'
+	nettyVersion = '4.1.4.Final'
 }
 
 webAppDirName = 'WebContent'
