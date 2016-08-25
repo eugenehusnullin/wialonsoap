@@ -1,5 +1,9 @@
 package wialonips;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
@@ -33,8 +37,11 @@ public class SocketStarter {
 	private ServerBootstrap serverBootstrap;
 	private Channel socketChannel;
 
+	private ExecutorService executor;
+
 	@PostConstruct
 	public void run() throws InterruptedException {
+		executor = Executors.newCachedThreadPool();
 
 		bossGroup = new NioEventLoopGroup();
 		workerGroup = new NioEventLoopGroup();
@@ -45,12 +52,12 @@ public class SocketStarter {
 				.childHandler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					protected void initChannel(SocketChannel ch) throws Exception {
-						ch.pipeline().addLast(new MessageDecoder());
+						ch.pipeline().addLast(new MessageDecoder(executor));
 					}
 				})
 				.option(ChannelOption.SO_BACKLOG, 128)
 				.option(ChannelOption.SO_LINGER, 0)
-				//.childOption(ChannelOption.SO_KEEPALIVE, true)
+				// .childOption(ChannelOption.SO_KEEPALIVE, true)
 				.childOption(ChannelOption.SO_LINGER, 0);
 
 		ChannelFuture channelFuture = serverBootstrap.bind(host, port).sync();
@@ -69,6 +76,7 @@ public class SocketStarter {
 
 	@PreDestroy
 	public void stop() throws InterruptedException {
+		// socketchannel
 		if (socketChannel != null && socketChannel.isOpen()) {
 			ChannelFuture closeFuture = socketChannel.close();
 			closeFuture.sync();
@@ -83,7 +91,21 @@ public class SocketStarter {
 			} catch (InterruptedException ignore) {
 			}
 		}
-
 		logger.info("Socket stoped.");
+
+		// executor
+		try {
+			System.out.println("attempt to shutdown executor");
+			executor.shutdown();
+			executor.awaitTermination(5, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			System.err.println("tasks interrupted");
+		} finally {
+			if (!executor.isTerminated()) {
+				System.err.println("cancel non-finished tasks");
+			}
+			executor.shutdownNow();
+			System.out.println("shutdown finished");
+		}
 	}
 }

@@ -2,6 +2,7 @@ package wialonips;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
+import java.util.concurrent.ExecutorService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,12 @@ public class MessageDecoder extends ChannelHandlerAdapter {
 	public final static AttributeKey<String> AK_ID = AttributeKey.valueOf("id");
 	public final static AttributeKey<String> AK_REMAINS = AttributeKey.valueOf("remains");
 	public final static AttributeKey<LocalDateTime> AK_LASTSEND = AttributeKey.valueOf("lastsend");
+
+	private ExecutorService executor;
+
+	public MessageDecoder(ExecutorService executor) {
+		this.executor = executor;
+	}
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -75,7 +82,11 @@ public class MessageDecoder extends ChannelHandlerAdapter {
 			ctx.channel().attr(AK_ID).set(imei);
 		}
 
-		messageEncoder.encode(imei, lines);
+		final String imei2 = imei;
+		executor.submit(() -> {
+			messageEncoder.encode(imei2, lines);
+		});
+
 		ctx.channel().attr(AK_LASTSEND).set(LocalDateTime.now());
 	}
 
