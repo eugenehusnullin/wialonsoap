@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
 	<Appenders>
-		<RollingFile name="Appender1" append="false" fileName="logs/wialonSOAP/all.log"
+		<RollingFile name="allAppender" append="false" fileName="logs/wialonSOAP/all.log"
 			filePattern="logs/wialonSOAP/all-%d{yyyy-MM-dd}-%i.log.gz">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 			<Policies>
 				<TimeBasedTriggeringPolicy />
 			</Policies>
 		</RollingFile>
-		<RollingFile name="AppenderErrors" append="false" fileName="logs/wialonSOAP/errors.log"
-			filePattern="logs/wialonSOAP/errors-%d{yyyy-MM-dd}-%i.log.gz">
+		<RollingFile name="errorAppender" append="false" fileName="logs/wialonSOAP/error.log"
+			filePattern="logs/wialonSOAP/error-%d{yyyy-MM-dd}-%i.log.gz">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 			<Policies>
 				<TimeBasedTriggeringPolicy />
 			</Policies>
-		</RollingFile>
-		<RollingFile name="SendManager" append="false" fileName="logs/wialonSOAP/sender.log"
-			filePattern="logs/wialonSOAP/sender-%d{yyyy-MM-dd}-%i.log.gz">
-			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
-			<Policies>
-				<TimeBasedTriggeringPolicy />
-			</Policies>
-		</RollingFile>
-		<RollingFile name="ipsAppender" append="false" fileName="logs/wialonSOAP/ips.log"
-			filePattern="logs/wialonSOAP/ips-%d{yyyy-MM-dd}-%i.log.gz">
+		</RollingFile>		
+		<RollingFile name="outAppender" append="false" fileName="logs/wialonSOAP/out.log"
+			filePattern="logs/wialonSOAP/out-%d{yyyy-MM-dd}-%i.log.gz">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 			<Policies>
 				<TimeBasedTriggeringPolicy />
@@ -31,15 +24,12 @@
 		</RollingFile>
 	</Appenders>
 	<Loggers>
-		<Logger name="ips" level="debug">
-	      		<AppenderRef ref="ipsAppender" />
-	    </Logger>
-		<Logger name="cityguide.SendManager" level="debug">
-	      		<AppenderRef ref="SendManager" />
-	    </Logger>
+		<Logger name="wialonsoap.SendManager" level="debug">
+	      		<AppenderRef ref="outAppender" />
+		</Logger>
 		<Root level="info">
-			<AppenderRef ref="Appender1" />
-			<AppenderRef ref="AppenderErrors" level="error" />
+			<AppenderRef ref="allAppender" />
+			<AppenderRef ref="errorAppender" level="error" />
 		</Root>
 	</Loggers>
 </Configuration>
