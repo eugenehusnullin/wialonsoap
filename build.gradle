@@ -22,7 +22,7 @@ repositories {
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'WialonSOAP',
+        attributes 'Implementation-Title': 'wialonsoap',
                    'Implementation-Version': version
     }
 }

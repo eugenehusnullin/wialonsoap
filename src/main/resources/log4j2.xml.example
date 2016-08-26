@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
 	<Appenders>
-		<RollingFile name="allAppender" append="false" fileName="logs/wialonSOAP/all.log"
-			filePattern="logs/wialonSOAP/all-%d{yyyy-MM-dd}-%i.log.gz">
+		<RollingFile name="allAppender" append="false" fileName="logs/wialonsoap/all.log"
+			filePattern="logs/wialonsoap/all-%d{yyyy-MM-dd}-%i.log.gz">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 			<Policies>
 				<TimeBasedTriggeringPolicy />
 			</Policies>
 		</RollingFile>
-		<RollingFile name="errorAppender" append="false" fileName="logs/wialonSOAP/error.log"
-			filePattern="logs/wialonSOAP/error-%d{yyyy-MM-dd}-%i.log.gz">
+		<RollingFile name="errorAppender" append="false" fileName="logs/wialonsoap/error.log"
+			filePattern="logs/wialonsoap/error-%d{yyyy-MM-dd}-%i.log.gz">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 			<Policies>
 				<TimeBasedTriggeringPolicy />
 			</Policies>
 		</RollingFile>		
-		<RollingFile name="outAppender" append="false" fileName="logs/wialonSOAP/out.log"
-			filePattern="logs/wialonSOAP/out-%d{yyyy-MM-dd}-%i.log.gz">
+		<RollingFile name="outAppender" append="false" fileName="logs/wialonsoap/out.log"
+			filePattern="logs/wialonsoap/out-%d{yyyy-MM-dd}-%i.log.gz">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 			<Policies>
 				<TimeBasedTriggeringPolicy />
