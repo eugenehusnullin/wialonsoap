@@ -6,7 +6,6 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-import cityguide.SendManager;
 import ru.fors.udo.telemetry.webservice.StoreTelemetry;
 import ru.fors.udo.telemetry.webservice.StoreTelemetryList;
 import ru.fors.udo.telemetry.webservice.StoreTelemetryListResponse;

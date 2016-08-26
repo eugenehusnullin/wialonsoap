@@ -39,9 +39,7 @@
 		</property>
 	</bean>
 
-	<context:component-scan base-package="wialonsoap" />
-	<context:component-scan base-package="cityguide" />
-	<context:component-scan base-package="wialonips" />
+	<context:component-scan base-package="wialonsoap" />	
 	<context:annotation-config />
 	<context:property-placeholder location="WEB-INF\settings" />
 

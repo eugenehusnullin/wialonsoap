@@ -1,2 +1,2 @@
-in.host=127.0.0.1
-in.port=9001
+cityguide.senders=30
+cityguide.url=http://service.probki.net/xmltrack/api/nytrack
